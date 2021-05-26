@@ -89,6 +89,7 @@ hr {
 main {
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
 }
 
 section {
@@ -96,14 +97,17 @@ section {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 a {
   text-decoration: none;
+  color: #d4af37;
 }
 
 footer {
   padding: 10px;
+  border-top: 5px solid #d4af37;
 }
 
 nav {
@@ -116,13 +120,47 @@ nav {
   right: 0;
 }
 
+input, textarea {
+  background-color: #1b1b1b;
+  color: #d4af37;
+  border: 2px solid #d4af37;
+  padding: 10px;
+  width: 300px;
+  font-size: 12pt;
+  font-family: 'Lato', sans-serif;
+}
+
+input[type="submit"] {
+  color: #eaeaea;
+}
+
+textarea {
+  height: 400px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+label {
+  font-size: 13pt;
+  margin-bottom: 5px;
+}
+
+form input, textarea {
+  margin-bottom: 20px;
+  align-self: center;
+}
+
 /**********************************************************
  * IDs
  *********************************************************/
 
 #title-section {
   text-align: center;
-  align-items: center;
   justify-content: center;
   background-image: url("../img/pocketwatch.png");
   background-repeat: no-repeat;
@@ -130,17 +168,16 @@ nav {
   background-position: center;
 }
 
-#title-section a {
+#title-section a, input[type="submit"] {
   padding: 10px;
   border: 2px solid #d4af37;
   color: #eaeaea;
   width: 200px;
   font-weight: bold;
   transition: background-color 0.5s ease-in-out;
-  animation: 1.5s ease-in-out delayedFadeIn;
 }
 
-#title-section a:hover {
+#title-section a:hover, input[type="submit"]:hover {
   padding: 10px;
   border: 2px solid #d4af37;
   background-color: #d4af37;
@@ -150,16 +187,23 @@ nav {
   transition: background-color 0.5s, color 0.5s;
 }
 
+#title-section a {
+  animation: 1.5s ease-in-out delayedFadeIn;
+}
+
 #store-section {
   background-color: #eaeaea;
   color: #1b1b1b;
-  align-items: center;
 }
 
 #store-items {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+#search {
+  text-align: center;
 }
 
 /**********************************************************
