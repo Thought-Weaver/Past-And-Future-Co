@@ -206,6 +206,55 @@ form input, textarea {
   text-align: center;
 }
 
+#modal-container {
+  opacity: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(27, 27, 27, 0.75);
+  /* Only flex when visible. */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: 0.5s;
+}
+
+#modal {
+  min-width: 350px;
+  min-height: 400px;
+  width: 50%;
+  height: 50%;
+  background-color: #1b1b1b;
+  border: 2px solid #d4af37;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#modal header, #modal footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#modal p {
+  flex-grow: 1;
+}
+
+#close-btn {
+  width: 64px;
+  height: 64px;
+  align-self: center;
+}
+
+#add-to-cart-btn {
+  width: 180px;
+  height: 64px;
+  align-self: center;
+}
+
 /**********************************************************
  * Classes
  *********************************************************/

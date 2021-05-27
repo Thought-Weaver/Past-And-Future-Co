@@ -17,13 +17,37 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
+    <script type="module" src="js/store.js"></script>
+    <script type="module" src="js/contact.js"></script>
   </head>
   
   <body>
     <nav>
-        <button id="home-button">Home</button>
-        <button id="cart-button">Cart</button>
+        <button id="home-btn">Home</button>
+        <button id="cart-btn">Cart</button>
     </nav>
+
+    <div id="modal-container">
+        <article id="modal">
+            <header>
+                <div>
+                    <!-- TODO: Insert placeholder image. -->
+                    <h1>This is a title.</h1>
+                </div>
+                <button id="close-btn">X</button>
+            </header>
+            <hr/>
+            <p>This is a description of the information.</p>
+            <footer>
+                <div>
+                    <p><b>Price:</b> A small sliver of your soul</p>
+                    <p><b>Quantity Available:</b> 16</p>
+                </div>
+                <button id="add-to-cart-btn">Add to Cart</button>
+            </footer>
+        </article>
+    </div>
 
     <main>
         <section id="title-section">
@@ -63,13 +87,13 @@
             <hr/>
             <form>
                 <label for="name">Name</label>
-                <input type="text" name="name" placeholder="Who are you?"/>
+                <input type="text" name="name" placeholder="Who are you?" required/>
 
                 <label for="email">E-mail</label>
-                <input type="text" name="email" placeholder="How can we reach you?"/>
+                <input type="text" name="email" placeholder="How can we reach you?" required/>
             
                 <label for="message">Message</label>
-                <textarea name="message" placeholder="Tell us something. We look forward to hearing your thoughts!"></textarea>
+                <textarea name="message" placeholder="Tell us something. We look forward to hearing your thoughts!" required></textarea>
             
                 <input type="submit" value="Submit"/>
             </form>
