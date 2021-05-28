@@ -170,6 +170,7 @@ input[type="submit"]:hover, #title-section a:hover, button:hover {
   color: #1b1b1b;
   font-weight: bold;
   transition: background-color 0.5s, color 0.5s;
+  cursor: pointer;
 }
 
 button, #category-select {
@@ -289,9 +290,24 @@ header, #modal footer {
   height: 75%;
 }
 
+#cart footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#cart-items {
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+
 #cart-icon, #home-icon {
   width: 64px;
   height: 64px;
+}
+
+#cart-icon:hover {
+  cursor: pointer;
 }
 
 /**********************************************************
@@ -322,4 +338,19 @@ header, #modal footer {
 .card img {
   width: 25%;
   align-self: center;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.cart-item p {
+  white-space: pre;
+}
+
+.cart-item h2 {
+  text-align: left;
 }

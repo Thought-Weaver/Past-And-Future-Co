@@ -9,6 +9,7 @@
   "author": "Logan Apple",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "globby": "^11.0.3",
     "path": "^0.12.7"

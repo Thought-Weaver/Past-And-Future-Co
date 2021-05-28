@@ -15,7 +15,7 @@
 
 const express = require("express");
 const fs = require("fs/promises");
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 /*************************************************************
  * CONSTANTS

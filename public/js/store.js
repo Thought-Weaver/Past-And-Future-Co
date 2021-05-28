@@ -73,8 +73,8 @@ function createItemCard(category, item) {
 
     let add_to_cart_button = createElem("button");
     add_to_cart_button.innerText = "Add to Cart";
-    add_to_cart_button.disabled = item["quantity"] > 0;
-    // TODO: Get cart functionality working.
+    add_to_cart_button.disabled = item["quantity"] <= 0;
+    add_to_cart_button.addEventListener("click", () => { addToCart(category, item) });
 
     button_container.appendChild(more_info_button);
     button_container.appendChild(add_to_cart_button);
@@ -159,21 +159,83 @@ function onSelectChange() {
     }
 }
 
-function displayItemModal(response) {
-    fromId("modal-img").src = "img/" + response["image"];
-    fromId("modal-img").alt = response["name"];
+function displayItemModal(category, item) {
+    fromId("modal-img").src = "img/" + item["image"];
+    fromId("modal-img").alt = item["name"];
 
-    fromId("modal-title").textContent = response["name"];
+    fromId("modal-title").textContent = item["name"];
 
-    fromId("modal-desc").textContent = response["full-description"];
+    fromId("modal-desc").textContent = item["full-description"];
 
-    fromId("modal-price").textContent = "Price: " + response["price"].toString();
-    fromId("modal-quantity").textContent = "Quantity: " + response["quantity"].toString();
+    fromId("modal-price").textContent = "Price: " + item["price"].toString();
+    fromId("modal-quantity").textContent = "Quantity: " + item["quantity"].toString();
 
-    // TODO: Get cart functionality working.
-    // fromId("add-to-cart-btn").addEventListener
+    fromId("add-to-cart-btn").addEventListener("click", () => { addToCart(category, item) });
+    fromId("add-to-cart-btn").disabled = item["quantity"] <= 0;
 
     openModal("modal-container");
+}
+
+function addToCart(category, item) {
+    if (!localStorage.getItem("cart")) {
+        localStorage.setItem("cart", JSON.stringify([]));
+    }
+
+    let currentCart = JSON.parse(localStorage.getItem("cart"));
+    currentCart.push([category, item]);
+    
+    localStorage.setItem("cart", JSON.stringify(currentCart));
+}
+
+function removeFromCart(index) {
+    let currentCart = JSON.parse(localStorage.getItem("cart"));
+    currentCart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(currentCart));
+}
+
+function displayCart() {
+    let currentCart = JSON.parse(localStorage.getItem("cart"));
+    let totalCost = 0;
+
+    let cart = fromId("cart-items");
+    while (cart.firstChild) {
+        cart.firstChild.remove();
+    }
+
+    if (currentCart) {
+        currentCart.forEach((pair, index) => {
+            let category = pair[0];
+            let item = pair[1];
+
+            let cartItem = createElem("div");
+            cartItem.classList.add("cart-item");
+            
+            let title = createElem("h2");
+            title.textContent = item["name"];
+
+            let removeButton = createElem("button");
+            removeButton.textContent = "Remove";
+            removeButton.addEventListener("click", () => { removeFromCart(index); displayCart(); });
+
+            let info = createElem("p");
+            info.textContent = "Price: " + item["price"];
+
+            let textContainer = createElem("div");
+            textContainer.appendChild(title);
+            textContainer.appendChild(info);
+
+            cartItem.appendChild(textContainer);
+            cartItem.appendChild(removeButton);
+
+            fromId("cart-items").appendChild(cartItem);
+
+            totalCost += item["price"];
+        });
+    }
+
+    fromId("total-cost").textContent = "Total: " + totalCost.toString();
+
+    openModal("cart-container");
 }
 
 function getItem(category, item) {
@@ -191,7 +253,7 @@ function getItemForModal(category, item) {
     fetch(`/categories/${categoryFormatted}/${itemFormatted}`)
         .then(checkStatus)
         .then(response => response.json())
-        .then(displayItemModal)
+        .then((response) => { displayItemModal(category, response) })
         .catch(handleError);
 }
 
@@ -254,5 +316,7 @@ function formatTitleCase(s) {
 
 fromId("close-btn").addEventListener("click", () => { closeModal("modal-container") });
 fromId("close-response-btn").addEventListener("click", () => { closeModal("response-container") });
+fromId("close-cart-btn").addEventListener("click", () => { closeModal("cart-container") });
+fromId("cart-icon").addEventListener("click", displayCart);
 fromId("category-select").addEventListener("change", onSelectChange);
 window.addEventListener("load", getItemsAndCategories);
