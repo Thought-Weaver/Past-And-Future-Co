@@ -257,6 +257,39 @@ function getItemForModal(category, item) {
         .catch(handleError);
 }
 
+function checkoutSuccess(text) {
+    localStorage.setItem("cart", JSON.stringify([]));
+
+    closeModal("cart-container");
+
+    fromId("server-response").getElementsByTagName("h1")[0].textContent = "Success!";
+    fromId("server-response").getElementsByTagName("p")[0].textContent = text;
+
+    openModal("response-container");
+}
+
+function checkout() {
+    let currentCart = JSON.parse(localStorage.getItem("cart"));
+    let cartMapped = currentCart.map(pair => {
+        return {
+            category: formatKebabCase(pair[0]),
+            item: formatKebabCase(pair[1]["name"])
+        }
+    });
+
+    fetch("/checkout", {
+        method: "POST",
+        body: JSON.stringify(cartMapped),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(checkStatus)
+    .then(response => response.text())
+    .then(checkoutSuccess)
+    .catch(handleError);
+}
+
 /**
  * Checks the status of the response for an error. In the case of an error,
  * throws an error to interrupt the fetch sequence.
@@ -319,4 +352,5 @@ fromId("close-response-btn").addEventListener("click", () => { closeModal("respo
 fromId("close-cart-btn").addEventListener("click", () => { closeModal("cart-container") });
 fromId("cart-icon").addEventListener("click", displayCart);
 fromId("category-select").addEventListener("change", onSelectChange);
+fromId("checkout-btn").addEventListener("click", checkout);
 window.addEventListener("load", getItemsAndCategories);

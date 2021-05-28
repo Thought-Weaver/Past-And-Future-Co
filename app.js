@@ -134,7 +134,6 @@ app.get("/items", async (req, res) => {
 
 app.post("/contact-form", async (req, res) => {
     try {
-        console.log(req.body);
         let name = req.body["name"];
         let email = req.body["email"];
         let message = req.body["message"];
@@ -149,6 +148,35 @@ app.post("/contact-form", async (req, res) => {
 
         res.type("text");
         res.send("Your response has been received and recorded.");
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
+app.post("/checkout", async (req, res) => {
+    try {
+        for (let i = 0; i < req.body.length; ++i) {
+            let item = req.body[i];
+            let itemFile = await fs.readFile(`categories/${item["category"]}/${item["item"]}.json`);
+            let json = await JSON.parse(itemFile);
+
+            if (json["quantity"] > 0) {
+                json["quantity"] -= 1;
+            }
+            else {
+                throw Error("Quantity not greater than 0.");
+            }
+
+            await fs.writeFile(
+                `categories/${item["category"]}/${item["item"]}.json`,
+                JSON.stringify(json),
+                "utf-8"
+            );
+        }
+
+        res.type("text");
+        res.send("Your order is on its way!");
     }
     catch (err) {
         res.status(500).send(SERVER_ERROR);

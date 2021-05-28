@@ -73,10 +73,10 @@ function submitForm(event) {
             "Content-Type": "application/json"
         }
     })
-        .then(checkStatus)
-        .then(response => response.text())
-        .then(createFormResponse)
-        .catch(handleError);
+    .then(checkStatus)
+    .then(response => response.text())
+    .then(createFormResponse)
+    .catch(handleError);
 }
 
 function createFormResponse(text) {

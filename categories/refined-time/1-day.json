@@ -1,8 +1,1 @@
-{
-    "name": "1 Day",
-    "short-description": "A time period of 24 hours.",
-    "full-description": "It is ever unfortunate that a single year in the Gregorian calendar cannot be broken into a perfect integer number of days. Don't let that trouble you, however. If a day (24 hours) is what you require, we are more than happy to oblige.",
-    "quantity": 99,
-    "price": 5,
-    "image": "refined-time-icon.png"
-}
+{"name":"1 Day","short-description":"A time period of 24 hours.","full-description":"It is ever unfortunate that a single year in the Gregorian calendar cannot be broken into a perfect integer number of days. Don't let that trouble you, however. If a day (24 hours) is what you require, we are more than happy to oblige.","quantity":98,"price":5,"image":"refined-time-icon.png"}
