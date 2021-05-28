@@ -49,7 +49,43 @@ function openModal(id) {
     );
 }
 
-function createItemCards(response) {
+function createItemCard(category, item) {
+    let card = createElem("article");
+    card.classList.add("card");
+
+    let img = createElem("img");
+    img.src = "img/" + item["image"];
+    img.alt = item["name"] + " icon";
+
+    let title = createElem("h2");
+    title.innerText = item["name"];
+
+    let hr = createElem("hr");
+
+    let short_desc = createElem("p");
+    short_desc.innerText = item["short-description"];
+
+    let button_container = createElem("div");
+    
+    let more_info_button = createElem("button");
+    more_info_button.innerText = "More Info";
+    more_info_button.addEventListener("click", () => { getItemForModal(category, item["name"]) });
+
+    let add_to_cart_button = createElem("button");
+    add_to_cart_button.innerText = "Add to Cart";
+    // TODO: Get cart functionality working.
+
+    button_container.appendChild(more_info_button);
+    button_container.appendChild(add_to_cart_button);
+
+    [img, title, hr, short_desc, button_container].forEach(elem => {
+        card.appendChild(elem);
+    });
+
+    fromId("store-items").appendChild(card);
+}
+
+function populateStore(response) {
     let container = fromId("store-items");
     while (container.firstChild) {
         container.firstChild.remove();
@@ -57,39 +93,7 @@ function createItemCards(response) {
 
     Object.keys(response["categories"]).forEach(category => {
         response["categories"][category].forEach(item => {
-            let card = createElem("article");
-            card.classList.add("card");
-    
-            let img = createElem("img");
-            img.src = "img/" + item["image"];
-            img.alt = item["name"] + " icon";
-
-            let title = createElem("h2");
-            title.innerText = item["name"];
-
-            let hr = createElem("hr");
-
-            let short_desc = createElem("p");
-            short_desc.innerText = item["short-description"];
-
-            let button_container = createElem("div");
-            
-            let more_info_button = createElem("button");
-            more_info_button.innerText = "More Info";
-            more_info_button.addEventListener("click", () => { getItem(category, item["name"]) });
-
-            let add_to_cart_button = createElem("button");
-            add_to_cart_button.innerText = "Add to Cart";
-            // TODO: Get cart functionality working.
-
-            button_container.appendChild(more_info_button);
-            button_container.appendChild(add_to_cart_button);
-
-            [img, title, hr, short_desc, button_container].forEach(elem => {
-                card.appendChild(elem);
-            });
-
-            fromId("store-items").appendChild(card);
+            createItemCard(category, item);
         })
     })
 }
@@ -98,8 +102,60 @@ function getItems() {
     fetch("/items")
         .then(checkStatus)
         .then(response => response.json())
-        .then(createItemCards)
+        .then(populateStore)
         .catch(handleError);
+}
+
+function populateCategorySelect(response) {
+    let select = fromId("category-select");
+    while (select.firstChild) {
+        select.firstChild.remove();
+    }
+
+    let option = createElem("option");
+    option.value = "All";
+    option.innerText = "All";
+    fromId("category-select").appendChild(option); 
+
+    response.forEach(category => {
+        let option = createElem("option");
+        option.value = category;
+        option.innerText = formatTitleCase(category);
+        fromId("category-select").appendChild(option);
+    });
+}
+
+function getCategories() {
+    fetch("/categories")
+        .then(checkStatus)
+        .then(response => response.json())
+        .then(populateCategorySelect)
+        .catch(handleError);
+}
+
+function getItemsAndCategories() {
+    getCategories();
+    getItems();
+}
+
+function onSelectChange() {
+    let container = fromId("store-items");
+    while (container.firstChild) {
+        container.firstChild.remove();
+    }
+
+    let category = fromId("category-select").value;
+    if (category == "All") {
+        getItems();
+    }
+    else {
+        let formattedCategory = formatKebabCase(category);
+        fetch(`/categories/${formattedCategory}`)
+            .then(checkStatus)
+            .then(response => response.json())
+            .then(response => { response.forEach(item => { getItem(formattedCategory, item) }) })
+            .catch(handleError);
+    }
 }
 
 function displayItemModal(response) {
@@ -120,6 +176,14 @@ function displayItemModal(response) {
 }
 
 function getItem(category, item) {
+    fetch(`/categories/${category}/${item}`)
+        .then(checkStatus)
+        .then(response => response.json())
+        .then((response) => { createItemCard(category, response) })
+        .catch(handleError);
+}
+
+function getItemForModal(category, item) {
     let categoryFormatted = formatKebabCase(category);
     let itemFormatted = formatKebabCase(item);
 
@@ -170,9 +234,27 @@ function formatKebabCase(s) {
     return s.toLowerCase().replaceAll(" ", "-");
 }
 
+/**
+ * Takes a dash-separated string and converts it to a title case string.
+ * 
+ * @param {String} s - The dash-separated string.
+ * @returns {String} The string formatted in title case.
+ */
+function formatTitleCase(s) {
+    let words = s.split("-");
+    let firstWord = words[0];
+    let result = firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
+    for (let i = 1; i < words.length; i++) {
+        let nextWord = words[i];
+        result += " " + nextWord.charAt(0).toUpperCase() + nextWord.slice(1);
+    }
+    return result;
+}
+
 /*************************************************************
  * EVENT HANDLERS
  *************************************************************/
 
 fromId("close-btn").addEventListener("click", () => { closeModal("modal-container") });
-window.addEventListener("load", getItems);
+fromId("category-select").addEventListener("change", onSelectChange);
+window.addEventListener("load", getItemsAndCategories);

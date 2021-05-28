@@ -103,7 +103,7 @@ app.get("/categories", async (req, res) => {
 app.get("/categories/:category", async (req, res) => {
     try {
         let items = await fs.readdir(`categories/${req.params["category"]}`);
-        items = items.map(itemFile => formatTitleCase(itemFile.replace(".json", "")))
+        items = items.map(itemFile => itemFile.replace(".json", ""))
         res.json(items);
     }
     catch (err) {

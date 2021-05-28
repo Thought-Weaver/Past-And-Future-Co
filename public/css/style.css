@@ -172,7 +172,7 @@ input[type="submit"]:hover, #title-section a:hover, button:hover {
   transition: background-color 0.5s, color 0.5s;
 }
 
-button {
+button, #category-select {
   background-color: #1b1b1b;
   color: #d4af37;
   border: 2px solid #d4af37;
