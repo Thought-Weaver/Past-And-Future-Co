@@ -181,6 +181,13 @@ button, #category-select {
   font-weight: bold;
 }
 
+header, #modal footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
 /**********************************************************
  * IDs
  *********************************************************/
@@ -243,13 +250,6 @@ button, #category-select {
   height: 50%;
 }
 
-#modal header, #modal footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-top: 10px;
-}
-
 #modal div {
   display: flex;
   flex-direction: row;
@@ -270,7 +270,7 @@ button, #category-select {
   flex-grow: 1;
 }
 
-#close-btn {
+#close-btn, #close-response-btn {
   width: 64px;
   height: 64px;
   align-self: center;

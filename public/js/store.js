@@ -73,6 +73,7 @@ function createItemCard(category, item) {
 
     let add_to_cart_button = createElem("button");
     add_to_cart_button.innerText = "Add to Cart";
+    add_to_cart_button.disabled = item["quantity"] > 0;
     // TODO: Get cart functionality working.
 
     button_container.appendChild(more_info_button);
@@ -218,10 +219,6 @@ function handleError(error) {
     fromId("server-response").getElementsByTagName("p")[0].textContent = "There's been an error: " + error;
 
     openModal("response-container");
-
-    setTimeout(() => {
-        closeModal("response-container");
-    }, 3000);
 }
 
 /**
@@ -256,5 +253,6 @@ function formatTitleCase(s) {
  *************************************************************/
 
 fromId("close-btn").addEventListener("click", () => { closeModal("modal-container") });
+fromId("close-response-btn").addEventListener("click", () => { closeModal("response-container") });
 fromId("category-select").addEventListener("change", onSelectChange);
 window.addEventListener("load", getItemsAndCategories);

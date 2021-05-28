@@ -22,6 +22,36 @@ const createElem = document.createElement.bind(document);
  * FUNCTIONS
  ***********************************************************************/
 
+ function closeModal(id) {
+    fromId(id).animate(
+        [ { opacity: 0 } ],
+        {
+            fill: "forwards",
+            easing: "steps(4, end)",
+            duration: 250,
+            easing: "ease-in-out"
+        }
+    );
+
+    setTimeout(() => {
+        fromId(id).style.display = "none";
+    }, 250);
+}
+
+function openModal(id) {
+    fromId(id).style.display = "flex";
+
+    fromId(id).animate(
+        [ { opacity: 1 } ],
+        {
+            fill: "forwards",
+            easing: "steps(4, end)",
+            duration: 250,
+            easing: "ease-in-out"
+        }
+    );
+}
+
 /**
  * Submit the form with a POST request and prevent it from navigating
  * away from the page.
@@ -50,14 +80,10 @@ function submitForm(event) {
 }
 
 function createFormResponse(text) {
-    let result = createElem("p");
-    result.textContent = text;
+    fromId("server-response").getElementsByTagName("h1")[0].textContent = "Success!";
+    fromId("server-response").getElementsByTagName("p")[0].textContent = text;
 
-    fromId("contact-section").appendChild(result);
-
-    setTimeout(() => {
-        result.remove();
-    }, 3000);
+    openModal("response-container");
 }
 
 /**
@@ -80,14 +106,10 @@ function checkStatus(response) {
  * @param {Error} error
  */
 function handleError(error) {
-    fromId("server-response").getElementsByType("h1")[0].textContent = "Error!";
-    fromId("server-response").getElementsByType("p")[0].textContent = "There's been an error: " + error;
+    fromId("server-response").getElementsByTagName("h1")[0].textContent = "Error!";
+    fromId("server-response").getElementsByTagName("p")[0].textContent = "There's been an error: " + error;
 
     openModal("response-container");
-
-    setTimeout(() => {
-        closeModal("response-container");
-    }, 3000);
 }
 
 /************************************************************************
