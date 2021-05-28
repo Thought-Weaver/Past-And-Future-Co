@@ -15,8 +15,7 @@
 
 const express = require("express");
 const fs = require("fs/promises");
-const globby = require("globby");
-const path = require("path");
+const bodyParser = require('body-parser')
 
 /*************************************************************
  * CONSTANTS
@@ -28,20 +27,19 @@ const PORT = process.env.PORT || 8000;
 const SERVER_ERROR = "Something went wrong... Please try again at a later time."
 
 /*************************************************************
+ * APP SETUP
+ *************************************************************/
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ strict: false }));
+app.use(express.static("public"));
+
+/*************************************************************
  * FUNCTIONS
  *************************************************************/
 
 /**
- * Generates menu data from categories/ subdirectories in format:
- *    { categories : { 
- *        categoryName : [ { itemData }, { itemData }, ... ], ...
- *        categoryName : [ { itemData }, { itemData }, ... ]
- *     }}
- * Relies on directory structure in the form:
- * categories/
- *   <categoryName>/
- *     <itemName>/
- *       <itemFiles ...>
+ * Retrieves all item JSON from the categories subfolders.
  * 
  * @returns {Object} Generated items in valid JSON format. 
  */
@@ -52,12 +50,15 @@ const SERVER_ERROR = "Something went wrong... Please try again at a later time."
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i];
             let categoryData = [];
-            let itemDirs = await globby(`categories/${category}/`, { onlyDirectories : true }); 
-            for (let j = 0; j < itemDirs.length; j++) {                
-                let itemData = await fs.readFile(itemDirs[j] + "/item.json", "utf8");
+
+            let items = await fs.readdir(`categories/${category}/`);
+
+            await Promise.all(items.map(async (itemFile) => {
+                let itemData = await fs.readFile(`categories/${category}/` + itemFile, "utf8");
                 let json = await JSON.parse(itemData);
                 categoryData.push(json);
-            }
+            }));
+            
             let formattedCategory = formatTitleCase(category);
             result[formattedCategory] = categoryData;
         }
@@ -101,7 +102,8 @@ app.get("/categories", async (req, res) => {
 
 app.get("/categories/:category", async (req, res) => {
     try {
-        let items = await fs.readdir(`categories/${category}`);
+        let items = await fs.readdir(`categories/${req.params["category"]}`);
+        items = items.map(itemFile => formatTitleCase(itemFile.replace(".json", "")))
         res.json(items);
     }
     catch (err) {
@@ -109,9 +111,48 @@ app.get("/categories/:category", async (req, res) => {
     }
 });
 
-/*************************************************************
- * APP SETUP
- *************************************************************/
+app.get("/categories/:category/:item", async (req, res) => {
+    try {
+        let item = await fs.readFile(`categories/${req.params["category"]}/${req.params["item"]}.json`, "utf8");
+        let json = await JSON.parse(item);
+        res.json(json);
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
 
-app.use(express.static("public"))
+app.get("/items", async (req, res) => {
+    try {
+        let items = await getItems();
+        res.json(items);
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
+app.post("/contact-form", async (req, res) => {
+    try {
+        console.log(req.body);
+        let name = req.body["name"];
+        let email = req.body["email"];
+        let message = req.body["message"];
+
+        var dateString = new Date().toLocaleString();
+        dateString = dateString.replaceAll("/", "-").replaceAll(":", "-").replace(",", "");
+
+        await fs.writeFile(
+            `./contact-forms/${name} (${dateString}).txt`,
+            `Name: ${name}\n\nE-mail: ${email}\n\nMessage: ${message}`,
+            "utf-8");
+
+        res.type("text");
+        res.send("Your response has been received and recorded.");
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
 app.listen(PORT);

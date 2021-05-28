@@ -1,0 +1,8 @@
+{
+    "name": "Loop",
+    "short-description": "Copy a moment of time into an everlasting, explorable capsule.",
+    "full-description": "Provide us the date in time, and we'll go back to map the desired event into a personal Recollection. This Recollection permits you to visit a recreation of the event at any time either from your own perspective or as an invisible third party.",
+    "quantity": 99,
+    "price": 950,
+    "image": "loop-icon.png"
+}

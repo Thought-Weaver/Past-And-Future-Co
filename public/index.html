@@ -24,28 +24,44 @@
   
   <body>
     <nav>
-        <button id="home-btn">Home</button>
-        <button id="cart-btn">Cart</button>
+        <a href="#title-section"><img id="home-icon" src="img/foresight-icon.png" alt="home icon"/></a>
+        <img id="cart-icon" src="img/cart-icon.png" alt="cart icon"/>
     </nav>
 
     <div id="modal-container">
         <article id="modal">
             <header>
                 <div>
-                    <!-- TODO: Insert placeholder image. -->
-                    <h1>This is a title.</h1>
+                    <img id="modal-img" src="img/refined-time-icon.png" alt="Refined Time"/>
+                    <h1 id="modal-title">This is a title.</h1>
                 </div>
                 <button id="close-btn">X</button>
             </header>
             <hr/>
-            <p>This is a description of the information.</p>
+            <p id="modal-desc">This is a description of the information.</p>
             <footer>
                 <div>
-                    <p><b>Price:</b> A small sliver of your soul</p>
-                    <p><b>Quantity Available:</b> 16</p>
+                    <p id="modal-price"><b>Price:</b> A small sliver of your soul</p>
+                    <p id="modal-quantity"><b>Quantity Available:</b> 16</p>
                 </div>
                 <button id="add-to-cart-btn">Add to Cart</button>
             </footer>
+        </article>
+    </div>
+
+    <div id="response-container">
+        <article id="server-response">
+            <h1>Success!</h1>
+            <hr/>
+            <p>This is the response from the server.</p>
+        </article>
+    </div>
+
+    <div id="cart-container">
+        <article id="cart">
+            <h1>Cart</h1>
+            <hr/>
+            <div id="cart-items"></div>
         </article>
     </div>
 
@@ -63,21 +79,7 @@
             <hr/>
             <input id="search" type="text" placeholder="When are you seeking? &#x1F50E;&#xFE0E;"/>
             <div id="store-items">
-                <div class="card">
-                    <h2>Test Title</h2>
-                    <hr/>
-                    <p>This will be a description. These cards will be populated based on information from the backend.</p>
-                </div>
-                <div class="card">
-                    <h2>Test Title</h2>
-                    <hr/>
-                    <p>This will be a description. These cards will be populated based on information from the backend.</p>
-                </div>
-                <div class="card">
-                    <h2>Test Title</h2>
-                    <hr/>
-                    <p>This will be a description. These cards will be populated based on information from the backend.</p>
-                </div>
+                <h2>Retrieving items...</h2>
             </div>
         </section>
 
@@ -85,12 +87,12 @@
             <h1>Have any questions?</h1>
             <h2>Let us know! We can always make time to help potential customers.</h2>
             <hr/>
-            <form>
+            <form id="contact-form">
                 <label for="name">Name</label>
                 <input type="text" name="name" placeholder="Who are you?" required/>
 
                 <label for="email">E-mail</label>
-                <input type="text" name="email" placeholder="How can we reach you?" required/>
+                <input type="email" name="email" placeholder="How can we reach you?" required/>
             
                 <label for="message">Message</label>
                 <textarea name="message" placeholder="Tell us something. We look forward to hearing your thoughts!" required></textarea>

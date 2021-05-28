@@ -1,0 +1,8 @@
+{
+    "name": "Wait",
+    "short-description": "Refined time isn't for everyone. Pause time for an hour instead!",
+    "full-description": "Pausing the universe was once a commodity only for the best in society. With our refinement of time, however, we can pause local time for an hour of your choosing. Note: Sufficient alteration to the local state of space will break the temporal seal.",
+    "quantity": 25,
+    "price": 500,
+    "image": "wait-icon.png"
+}
