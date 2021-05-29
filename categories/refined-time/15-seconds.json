@@ -1,8 +1,1 @@
-{
-    "name": "15 Seconds",
-    "short-description": "Just enough to make something nice last a little longer.",
-    "full-description": "Every second matters. Those looking to procure our smallest quantity of refined time may find it great for letting a happy moment last a little longer, taking a breath before a big day, and far more. Seconds need not be used all at once for those looking to apply them over time.",
-    "quantity": 99,
-    "price": 2,
-    "image": "refined-time-icon.png"
-}
+{"name":"15 Seconds","short-description":"Just enough to make something nice last a little longer.","full-description":"Every second matters. Those looking to procure our smallest quantity of refined time may find it great for letting a happy moment last a little longer, taking a breath before a big day, and far more. Seconds need not be used all at once for those looking to apply them over time.","quantity":98,"price":2,"image":"refined-time-icon.png"}

@@ -1,8 +1,1 @@
-{
-    "name": "Timekeeping",
-    "short-description": "Store a personal affect in an undisclosed, secure moment of time.",
-    "full-description": "Concern over the safety of your belongings is a matter of the past. With L&A Past and Future Co., this is especially true: We will take an item of your choice and keep it in an undisclosed moment of time, safe from anyone who might attempt to take it.",
-    "quantity": 99,
-    "price": 500,
-    "image": "timekeeping-icon.png"
-}
+{"name":"Timekeeping","short-description":"Store a personal affect in an undisclosed, secure moment of time.","full-description":"Concern over the safety of your belongings is a matter of the past. With L&A Past and Future Co., this is especially true: We will take an item of your choice and keep it in an undisclosed moment of time, safe from anyone who might attempt to take it.","quantity":98,"price":500,"image":"timekeeping-icon.png"}

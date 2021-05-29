@@ -15,7 +15,9 @@
 
 const express = require("express");
 const fs = require("fs/promises");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
+var session = require("express-session");
+var path = require("path");
 
 /*************************************************************
  * CONSTANTS
@@ -25,11 +27,17 @@ const app = express();
 
 const PORT = process.env.PORT || 8000;
 const SERVER_ERROR = "Something went wrong... Please try again at a later time."
+const LOGIN_ERROR = "Your login username or password was not recognized."
 
 /*************************************************************
  * APP SETUP
  *************************************************************/
 
+app.use(session({
+    secret: "keepit",
+	resave: true,
+	saveUninitialized: true
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ strict: false }));
 app.use(express.static("public"));
@@ -37,6 +45,17 @@ app.use(express.static("public"));
 /*************************************************************
  * FUNCTIONS
  *************************************************************/
+
+async function getUser(username) {
+    try {
+        let item = await fs.readFile(`users/${username}.json`, "utf8");
+        let json = await JSON.parse(item);
+        return json;
+    }
+    catch (err) {
+        throw Error(LOGIN_ERROR);
+    }
+}
 
 /**
  * Retrieves all item JSON from the categories subfolders.
@@ -177,6 +196,63 @@ app.post("/checkout", async (req, res) => {
 
         res.type("text");
         res.send("Your order is on its way!");
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
+app.post("/login", async (req, res) => {
+    try {
+        let username = req.body["username"];
+        let password = req.body["password"];
+
+        let user = await getUser(username);
+        if (!user || user.password != password) {
+            throw Error(LOGIN_ERROR);
+        }
+
+        req.session.authenticated = true;
+        res.redirect("admin.html");
+    }
+    catch (err) {
+        res.status(401).send(LOGIN_ERROR);
+    }
+});
+
+app.get("/admin", async (req, res) => {
+    if (!req.session.authenticated) {
+        res.redirect("login.html");
+    }
+});
+
+app.get("/users/:user", async (req, res) => {
+    try {
+        let json = await getUser(req.params["user"]);
+        res.json(json);
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
+app.post("/categories/:category/:item", async (req, res) => {
+    try {
+        let item = await fs.readFile(`categories/${req.params["category"]}/${req.params["item"]}.json`, "utf8");
+        let json = await JSON.parse(item);
+        
+        json["image"] = req.body["image"];
+        json["quantity"] = req.body["quantity"];
+        json["price"] = req.body["price"];
+        json["short-description"] = req.body["short-description"];
+        json["full-description"] = req.body["full-description"];
+
+        await fs.writeFile(`categories/${req.params["category"]}/${req.params["item"]}.json`,
+                           JSON.stringify(json),
+                           "utf8");
+
+        res.type("text");
+        res.send(`The item (${formatTitleCase(req.params["item"])}) has been updated!`);
     }
     catch (err) {
         res.status(500).send(SERVER_ERROR);

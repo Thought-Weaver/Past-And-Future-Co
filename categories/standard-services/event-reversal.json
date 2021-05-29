@@ -1,8 +1,1 @@
-{
-    "name": "Event Reversal",
-    "short-description": "Prepare in advance and insure a single event in the timeline.",
-    "full-description": "For those looking to make an event the best it can be, we offer an insurance option to reverse an event for reattempting immediately afterwards. Event reversal is a one-time option and if another involved has already procured it for the event, we cannot accommodate you.",
-    "quantity": 99,
-    "price": 1000,
-    "image": "event-reversal-icon.png"
-}
+{"name":"Event Reversal","short-description":"Prepare in advance and insure a single event in the timeline.","full-description":"For those looking to make an event the best it can be, we offer an insurance option to reverse an event for reattempting immediately afterwards. Event reversal is a one-time option and if another involved has already procured it for the event, we cannot accommodate you.","quantity":98,"price":1000,"image":"event-reversal-icon.png"}

@@ -1,8 +1,1 @@
-{
-    "name": "Foresight",
-    "short-description": "Gain 24 hours of being able to see the most probable local timeline.",
-    "full-description": "The future is unknowable, precisely because there is no singular future to know, only possibilities. While it is no guarantee that seeing the most probable timeline will allow you to adjust events in your favor, it is highly likely.",
-    "quantity": 99,
-    "price": 500,
-    "image": "foresight-icon.png"
-}
+{"name":"Foresight","short-description":"Gain 24 hours of being able to see the most probable local timeline.","full-description":"The future is unknowable, precisely because there is no singular future to know, only possibilities. While it is no guarantee that seeing the most probable timeline will allow you to adjust events in your favor, it is highly likely.","quantity":98,"price":500,"image":"foresight-icon.png"}

@@ -62,24 +62,24 @@ function createItemCard(category, item) {
 
     let hr = createElem("hr");
 
-    let short_desc = createElem("p");
-    short_desc.innerText = item["short-description"];
+    let shortDesc = createElem("p");
+    shortDesc.innerText = item["short-description"];
 
-    let button_container = createElem("div");
+    let buttonContainer = createElem("div");
     
-    let more_info_button = createElem("button");
-    more_info_button.innerText = "More Info";
-    more_info_button.addEventListener("click", () => { getItemForModal(category, item["name"]) });
+    let moreInfoButton = createElem("button");
+    moreInfoButton.innerText = "More Info";
+    moreInfoButton.addEventListener("click", () => { getItemForModal(category, item["name"]) });
 
-    let add_to_cart_button = createElem("button");
-    add_to_cart_button.innerText = "Add to Cart";
-    add_to_cart_button.disabled = item["quantity"] <= 0;
-    add_to_cart_button.addEventListener("click", () => { addToCart(category, item) });
+    let addToCartButton = createElem("button");
+    addToCartButton.innerText = "Add to Cart";
+    addToCartButton.disabled = item["quantity"] <= 0;
+    addToCartButton.addEventListener("click", () => { addToCart(category, item) });
 
-    button_container.appendChild(more_info_button);
-    button_container.appendChild(add_to_cart_button);
+    buttonContainer.appendChild(moreInfoButton);
+    buttonContainer.appendChild(addToCartButton);
 
-    [img, title, hr, short_desc, button_container].forEach(elem => {
+    [img, title, hr, shortDesc, buttonContainer].forEach(elem => {
         card.appendChild(elem);
     });
 
@@ -204,7 +204,6 @@ function displayCart() {
 
     if (currentCart) {
         currentCart.forEach((pair, index) => {
-            let category = pair[0];
             let item = pair[1];
 
             let cartItem = createElem("div");
@@ -266,6 +265,9 @@ function checkoutSuccess(text) {
     fromId("server-response").getElementsByTagName("p")[0].textContent = text;
 
     openModal("response-container");
+
+    // Refresh the items in case one runs out of stock.
+    onSelectChange();
 }
 
 function checkout() {

@@ -1,0 +1,58 @@
+<!--
+  Name: Logan Apple
+  CS 101 Spring 2021
+  Date: May 28th, 2021
+
+  This is the login page, providing a place for users/admins to login
+  to the website.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>L&A Login</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+
+    <script type="module" src="js/login.js"></script>
+  </head>
+  
+  <body>
+    <div id="response-container">
+        <article id="server-response">
+            <header>
+                <h1>Success!</h1>
+                <button id="close-response-btn">X</button>
+            </header>
+            <hr/>
+            <p>This is the response from the server.</p>
+        </article>
+    </div>
+
+    <main>
+        <section id="title-section">
+            <hr/>
+            <h1>&larrtl; Login &rarrtl;</h1>
+            <hr/>
+            <form id="login-form">
+                <label for="username">Username</label>
+                <input type="text" name="username" required/>
+
+                <label for="password">Password</label>
+                <input type="password" name="password" required/>
+            
+                <input type="submit" value="Login"/>
+            </form>
+        </section>
+
+        <footer>
+            <p>Copyright &copy; L&A Past and Future Co. 1896</p>
+            <p>Title image from <a target="_blank" href="https://www.pngfind.com/mpng/iRxwiwo_pocket-watch-clipart-clipart-pocket-watch-black-and/">PNGFind</a></p>
+            <p>Icons by <a target="_blank" href="https://www.flaticon.com/packs/time-management-128?word=time%20management">FlatIcon</a></p>
+        </footer>
+    </main>
+  </body>
+</html>
