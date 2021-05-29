@@ -14,7 +14,13 @@
  * IMPORTS
  ***********************************************************************/
 
-import { openModal, fromId, fromName } from "./utils.js"
+import { 
+    openModal,
+    fromId,
+    fromName,
+    checkStatus,
+    handleError
+} from "./utils.js";
 
 /************************************************************************
  * FUNCTIONS
@@ -47,35 +53,14 @@ function submitForm(event) {
     .catch(handleError);
 }
 
+/**
+ * Display the response from the server after submitting the form successfully.
+ *
+ * @param {String} text
+ */
 function createFormResponse(text) {
     fromId("server-response").getElementsByTagName("h1")[0].textContent = "Success!";
     fromId("server-response").getElementsByTagName("p")[0].textContent = text;
-
-    openModal("response-container");
-}
-
-/**
- * Checks the status of the response for an error. In the case of an error,
- * throws an error to interrupt the fetch sequence.
- *
- * @param {Response} response - The response from the API call.
- * @return {object} If successful, a parsed object from the response JSON.
- */
-function checkStatus(response) {
-    if (!response.ok) {
-        throw new Error("Response fetch failed with status " + response.status + "!");
-    }
-    return response;
-}
-
-/**
- * Handles any errors that occur in the fetch sequence.
- *
- * @param {Error} error
- */
-function handleError(error) {
-    fromId("server-response").getElementsByTagName("h1")[0].textContent = "Error!";
-    fromId("server-response").getElementsByTagName("p")[0].textContent = "There's been an error: " + error;
 
     openModal("response-container");
 }

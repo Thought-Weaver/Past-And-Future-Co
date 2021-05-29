@@ -12,7 +12,16 @@
  * IMPORTS
  ***********************************************************************/
 
-import { openModal, closeModal, fromId, createElem } from "./utils.js"
+import {
+    openModal,
+    closeModal,
+    fromId,
+    createElem,
+    handleError,
+    checkStatus,
+    formatKebabCase,
+    formatTitleCase 
+} from "./utils.js";
 
 /*************************************************************
  * FUNCTIONS
@@ -96,7 +105,6 @@ function createItemCard(category, item) {
     fromId("store-items").appendChild(card);
 }
 
-
 /**
  * Populate the admin panel listing with all the store items.
  *
@@ -115,7 +123,6 @@ function populateStore(response) {
     })
 }
 
-
 /**
  * Fetch all the items using the API.
  */
@@ -126,7 +133,6 @@ function getItems() {
         .then(populateStore)
         .catch(handleError);
 }
-
 
 /**
  * Update a particular item's information in the store.
@@ -166,7 +172,6 @@ function updateItem(event, category, name, itemCard) {
     .catch(handleError);
 }
 
-
 /**
  * Delete an item from the store.
  *
@@ -191,7 +196,6 @@ function deleteItem(event, category, name) {
     .catch(handleError);
 }
 
-
 /**
  * Add an item to the store using the inputs on the admin panel.
  */
@@ -213,7 +217,6 @@ function addItem() {
     .catch(handleError);
 }
 
-
 /**
  * Add all the categories to the select for adding an item.
  *
@@ -233,7 +236,6 @@ function populateCategorySelect(response) {
     });
 }
 
-
 /**
  * Fetch all the categories in the store, then populate
  * the select.
@@ -245,7 +247,6 @@ function getCategories() {
         .then(populateCategorySelect)
         .catch(handleError);
 }
-
 
 /**
  * On loading the page, make sure the user is logged in.
@@ -262,59 +263,6 @@ function checkAdmin() {
     
     getItems();
     getCategories(); 
-}
-
-/**
- * Checks the status of the response for an error. In the case of an error,
- * throws an error to interrupt the fetch sequence.
- *
- * @param {Response} response - The response from the API call.
- * @return {object} If successful, a parsed object from the response JSON.
- */
-function checkStatus(response) {
-    if (!response.ok) {
-        throw new Error("Response fetch failed with status " + response.status + "!");
-    }
-    return response;
-}
-
-/**
- * Handles any errors that occur in the fetch sequence.
- *
- * @param {Error} error
- */
-function handleError(error) {
-    fromId("server-response").getElementsByTagName("h1")[0].textContent = "Error!";
-    fromId("server-response").getElementsByTagName("p")[0].textContent = "There's been an error: " + error;
-
-    openModal("response-container");
-}
-
-/**
- * Takes a title case string and converts it to dash-separated string.
- * 
- * @param {String} s - The title case string.
- * @returns {String} The kebab case string.
- */
-function formatKebabCase(s) {
-    return s.toLowerCase().replaceAll(" ", "-");
-}
-
-/**
- * Takes a dash-separated string and converts it to a title case string.
- * 
- * @param {String} s - The dash-separated string.
- * @returns {String} The string formatted in title case.
- */
-function formatTitleCase(s) {
-    let words = s.split("-");
-    let firstWord = words[0];
-    let result = firstWord.charAt(0).toUpperCase() + firstWord.slice(1);
-    for (let i = 1; i < words.length; i++) {
-        let nextWord = words[i];
-        result += " " + nextWord.charAt(0).toUpperCase() + nextWord.slice(1);
-    }
-    return result;
 }
 
 /*************************************************************
