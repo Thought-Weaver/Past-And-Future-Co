@@ -1,7 +1,7 @@
 {
   "name": "la-future-and-past-co",
   "version": "1.0.0",
-  "description": "",
+  "description": "The API for the L&A Past and Future Co. website",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,10 +9,14 @@
   "author": "Logan Apple",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.28.1",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "globby": "^11.0.3",
     "path": "^0.12.7"
+  },
+  "apidoc": {
+    "title": "API Doc for L&A Past and Future Co."
   }
 }

@@ -150,8 +150,6 @@ function updateItem(event, category, name, itemCard) {
     fetch(`/categories/${formattedCategory}/${formattedName}`, {
         method: "POST",
         body: JSON.stringify({
-            "category": category,
-            "item": name,
             "image": itemCard.querySelector("[name='image']").value,
             "quantity": itemCard.querySelector("[name='quantity']").value,
             "price": itemCard.querySelector("[name='price']").value,

@@ -114,6 +114,13 @@ function formatTitleCase(s) {
  * ENDPOINTS
  *************************************************************/
 
+/**
+ * @api {get} /categories/ Request Item Categories
+ * @apiName GetCategories
+ * @apiGroup Items
+ *
+ * @apiSuccess {Array} categories Categories of items.
+ */
 app.get("/categories", async (req, res) => {
     try {
         let categories = await fs.readdir("categories");
@@ -124,6 +131,15 @@ app.get("/categories", async (req, res) => {
     }
 });
 
+/**
+ * @api {get} /categories/:category Request Items in Category
+ * @apiName GetCategory
+ * @apiGroup Items
+ *
+ * @apiParam {String} category The name of the category.
+ * 
+ * @apiSuccess {Array} items Item names in the category.
+ */
 app.get("/categories/:category", async (req, res) => {
     try {
         let items = await fs.readdir(`categories/${req.params["category"]}`);
@@ -135,6 +151,21 @@ app.get("/categories/:category", async (req, res) => {
     }
 });
 
+/**
+ * @api {get} /categories/:category Request Item
+ * @apiName GetItem
+ * @apiGroup Items
+ *
+ * @apiParam {String} category The name of the category.
+ * @apiParam {String} item The name of the item.
+ * 
+ * @apiSuccess {String} name Title-case name of the item.
+ * @apiSuccess {String} short-description A short summary of what the item is.
+ * @apiSuccess {Array} full-description A long description of the item.
+ * @apiSuccess {Number} quantity The number of this item in-stock.
+ * @apiSuccess {Number} price How much the item costs.
+ * @apiSuccess {String} image The name of the image representing this item, stored in public images.
+ */
 app.get("/categories/:category/:item", async (req, res) => {
     try {
         let item = await fs.readFile(`categories/${req.params["category"]}/${req.params["item"]}.json`, "utf8");
@@ -146,6 +177,13 @@ app.get("/categories/:category/:item", async (req, res) => {
     }
 });
 
+/**
+ * @api {get} /items Request All Items
+ * @apiName GetItems
+ * @apiGroup Items
+ *
+ * @apiSuccess {Object} items A dictionary of everything in the categories folder.
+ */
 app.get("/items", async (req, res) => {
     try {
         let items = await getItems();
@@ -156,6 +194,17 @@ app.get("/items", async (req, res) => {
     }
 });
 
+/**
+ * @api {post} /contact-form Contact Form
+ * @apiName ContactForm
+ * @apiGroup Contact
+ * 
+ * @apiParam (Request body) {String} name The person's full name.
+ * @apiParam (Request body) {String} email The person's email.
+ * @apiParam (Request body) {String} message The sent message.
+ * 
+ * @apiSuccess {String} response A message that the message was successfully recorded.
+ */
 app.post("/contact-form", async (req, res) => {
     try {
         let name = req.body["name"];
@@ -178,6 +227,15 @@ app.post("/contact-form", async (req, res) => {
     }
 });
 
+/**
+ * @api {post} /checkout Checkout
+ * @apiName Checkout
+ * @apiGroup Items
+ * 
+ * @apiParam (Request body) {Array} items An array of dictionaries with category and item keys.
+ * 
+ * @apiSuccess {String} response A message that the order is on its way.
+ */
 app.post("/checkout", async (req, res) => {
     try {
         for (let i = 0; i < req.body.length; ++i) {
@@ -207,6 +265,15 @@ app.post("/checkout", async (req, res) => {
     }
 });
 
+/**
+ * @api {post} /login Login
+ * @apiName Login
+ * @apiGroup Auth
+ * 
+ * @apiParam (Request body) {String} username The person's username.
+ * @apiParam (Request body) {String} password The persons' password.
+ * 
+ */
 app.post("/login", async (req, res) => {
     try {
         let username = req.body["username"];
@@ -225,22 +292,34 @@ app.post("/login", async (req, res) => {
     }
 });
 
+/**
+ * @api {get} /admin Admin Check
+ * @apiName Admin
+ * @apiGroup Auth
+ * 
+ */
 app.get("/admin", async (req, res) => {
     if (!req.session.authenticated) {
         res.redirect("../login.html");
     }
 });
 
-app.get("/users/:user", async (req, res) => {
-    try {
-        let json = await getUser(req.params["user"]);
-        res.json(json);
-    }
-    catch (err) {
-        res.status(500).send(SERVER_ERROR);
-    }
-});
-
+/**
+ * @api {post} /categories/:category/:item Update Item
+ * @apiName UpdateItem
+ * @apiGroup Items
+ * 
+ * @apiParam {String} category The item's category.
+ * @apiParam {String} item The item's name.
+ * 
+ * @apiParam (Request body) {String} image The updated image filename to represent the item.
+ * @apiParam (Request body) {String} quantity The updated item quantity.
+ * @apiParam (Request body) {String} price The updated item price.
+ * @apiParam (Request body) {String} short-description The updated item short summary.
+ * @apiParam (Request body) {String} full-description The updated item full description.
+ * 
+ * @apiSuccess {String} response A message that the item has been updated.
+ */
 app.post("/categories/:category/:item", async (req, res) => {
     try {
         let item = await fs.readFile(`categories/${req.params["category"]}/${req.params["item"]}.json`, "utf8");
@@ -264,6 +343,16 @@ app.post("/categories/:category/:item", async (req, res) => {
     }
 });
 
+/**
+ * @api {delete} /categories/:category/:item Delete Item
+ * @apiName DeleteItem
+ * @apiGroup Items
+ * 
+ * @apiParam {String} category The item's category.
+ * @apiParam {String} item The item's name.
+ * 
+ * @apiSuccess {String} response A message that the item has been deleted.
+ */
 app.delete("/categories/:category/:item", async (req, res) => {
     try {
         await fs.unlink(`categories/${req.params["category"]}/${req.params["item"]}.json`);
@@ -276,6 +365,16 @@ app.delete("/categories/:category/:item", async (req, res) => {
     }
 });
 
+/**
+ * @api {post} /items/:category/:item Create Item
+ * @apiName CreateItem
+ * @apiGroup Items
+ * 
+ * @apiParam {String} category The item's category.
+ * @apiParam {String} item The item's name.
+ * 
+ * @apiSuccess {String} response A message that the item has been created.
+ */
 app.post("/items/:category/:item", async (req, res) => {
     try {
         await fs.writeFile(`categories/${req.params["category"]}/${req.params["item"]}.json`,
