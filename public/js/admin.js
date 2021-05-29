@@ -101,16 +101,20 @@ function createItemCard(category, item) {
     fullDesc.value = item["full-description"];
     fullDesc.name = "full-description";
 
+    let deleteButton = createElem("button");
+    deleteButton.textContent = "Delete";
+
     let updateButton = createElem("button");
     updateButton.type = "submit";
     updateButton.textContent = "Update";
 
     card.addEventListener("submit", event => { updateItem(event, category, item["name"], card) });
+    deleteButton.addEventListener("click", event => { deleteItem(event, category, item["name"]) });
 
     [nameTitle, categoryTitle, hr, imgLabel, img,
      quantityLabel, quantity, priceLabel, price,
      shortDescLabel, shortDesc, fullDescLabel, fullDesc,
-     updateButton].forEach(elem => {
+     deleteButton, updateButton].forEach(elem => {
         card.appendChild(elem);
     });
 
@@ -166,6 +170,63 @@ function updateItem(event, category, name, itemCard) {
         openModal("response-container");
     })
     .catch(handleError);
+}
+
+function deleteItem(event, category, name) {
+    event.preventDefault();
+
+    let formattedCategory = formatKebabCase(category);
+    let formattedName = formatKebabCase(name);
+    fetch(`/categories/${formattedCategory}/${formattedName}`, { method: "DELETE" })
+    .then(checkStatus)
+    .then(response => response.text())
+    .then(text => {
+        fromId("server-response").getElementsByTagName("h1")[0].textContent = "Success!";
+        fromId("server-response").getElementsByTagName("p")[0].textContent = text;
+        openModal("response-container");
+        getItems();
+    })
+    .catch(handleError);
+}
+
+function addItem() {
+    let name = fromId("new-item-name").value;
+    let category = fromId("new-item-category").value;
+
+    let formattedCategory = formatKebabCase(category);
+    let formattedName = formatKebabCase(name);
+    fetch(`/items/${formattedCategory}/${formattedName}`, { method: "POST" })
+    .then(checkStatus)
+    .then(response => response.text())
+    .then(text => {
+        fromId("server-response").getElementsByTagName("h1")[0].textContent = "Success!";
+        fromId("server-response").getElementsByTagName("p")[0].textContent = text;
+        openModal("response-container");
+        getItems();
+    })
+    .catch(handleError);
+}
+
+function populateCategorySelect(response) {
+    let select = fromId("new-item-category");
+    while (select.firstChild) {
+        select.firstChild.remove();
+    }
+
+    response.forEach(category => {
+        let option = createElem("option");
+        option.value = category;
+        option.innerText = formatTitleCase(category);
+        select.appendChild(option);
+    });
+}
+
+function getCategories() {
+    fetch("/categories")
+        .then(checkStatus)
+        .then(response => response.json())
+        .then(populateCategorySelect)
+        .catch(handleError);
 }
 
 /**
@@ -226,4 +287,5 @@ function formatTitleCase(s) {
  *************************************************************/
 
 fromId("close-response-btn").addEventListener("click", () => { closeModal("response-container") });
-window.addEventListener("load", getItems);
+fromId("add-item-btn").addEventListener("click", addItem);
+window.addEventListener("load", () => { getItems(); getCategories(); });

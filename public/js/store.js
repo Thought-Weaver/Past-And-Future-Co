@@ -116,13 +116,13 @@ function populateCategorySelect(response) {
     let option = createElem("option");
     option.value = "All";
     option.innerText = "All";
-    fromId("category-select").appendChild(option); 
+    select.appendChild(option); 
 
     response.forEach(category => {
         let option = createElem("option");
         option.value = category;
         option.innerText = formatTitleCase(category);
-        fromId("category-select").appendChild(option);
+        select.appendChild(option);
     });
 }
 

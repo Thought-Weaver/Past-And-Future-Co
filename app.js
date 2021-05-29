@@ -259,4 +259,30 @@ app.post("/categories/:category/:item", async (req, res) => {
     }
 });
 
+app.delete("/categories/:category/:item", async (req, res) => {
+    try {
+        await fs.unlink(`categories/${req.params["category"]}/${req.params["item"]}.json`);
+
+        res.type("text");
+        res.send(`The item (${formatTitleCase(req.params["item"])}) has been deleted!`);
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
+app.post("/items/:category/:item", async (req, res) => {
+    try {
+        await fs.writeFile(`categories/${req.params["category"]}/${req.params["item"]}.json`,
+                            JSON.stringify({ name: formatTitleCase(req.params["item"]) }),
+                            { flag: "wx" });
+
+        res.type("text");
+        res.send(`The item (${formatTitleCase(req.params["item"])}) has been created!`);
+    }
+    catch (err) {
+        res.status(500).send(SERVER_ERROR);
+    }
+});
+
 app.listen(PORT);

@@ -173,7 +173,7 @@ input[type="submit"]:hover, #title-section a:hover, button:hover {
   cursor: pointer;
 }
 
-button, #category-select {
+button, select {
   background-color: #1b1b1b;
   color: #eaeaea;
   border: 2px solid #d4af37;
