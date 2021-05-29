@@ -63,11 +63,11 @@ export function openModal(id) {
  * throws an error to interrupt the fetch sequence.
  *
  * @param {Response} response - The response from the API call.
- * @return {object} If successful, a parsed object from the response JSON.
+ * @return {object} Valid response if it was successful, else rejected Promise result.
  */
 export function checkStatus(response) {
     if (!response.ok) {
-        throw new Error("Response fetch failed with status " + response.status + "!");
+        throw new Error(response.statusText);
     }
     return response;
 }
@@ -75,11 +75,11 @@ export function checkStatus(response) {
 /**
  * Handles any errors that occur in the fetch sequence.
  *
- * @param {Error} error
+ * @param {Error} error - The error raised during the process.
  */
 export function handleError(error) {
     fromId("server-response").getElementsByTagName("h1")[0].textContent = "Error!";
-    fromId("server-response").getElementsByTagName("p")[0].textContent = error;
+    fromId("server-response").getElementsByTagName("p")[0].textContent = error.message;
 
     openModal("response-container");
 }

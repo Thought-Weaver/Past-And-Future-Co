@@ -127,7 +127,8 @@ app.get("/categories", async (req, res) => {
         res.json(categories);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -147,7 +148,8 @@ app.get("/categories/:category", async (req, res) => {
         res.json(items);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -173,7 +175,8 @@ app.get("/categories/:category/:item", async (req, res) => {
         res.json(json);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -190,7 +193,8 @@ app.get("/items", async (req, res) => {
         res.json(items);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -223,7 +227,8 @@ app.post("/contact-form", async (req, res) => {
         res.send("Your response has been received and recorded.");
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -261,7 +266,8 @@ app.post("/checkout", async (req, res) => {
         res.send("Your order is on its way!");
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -288,7 +294,8 @@ app.post("/login", async (req, res) => {
         res.redirect("../admin.html");
     }
     catch (err) {
-        res.status(401).send(LOGIN_ERROR);
+        res.statusMessage = LOGIN_ERROR;
+        res.status(401).end();
     }
 });
 
@@ -339,7 +346,8 @@ app.post("/categories/:category/:item", async (req, res) => {
         res.send(`The item (${formatTitleCase(req.params["item"])}) has been updated!`);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -361,7 +369,8 @@ app.delete("/categories/:category/:item", async (req, res) => {
         res.send(`The item (${formatTitleCase(req.params["item"])}) has been deleted!`);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
@@ -385,7 +394,8 @@ app.post("/items/:category/:item", async (req, res) => {
         res.send(`The item (${formatTitleCase(req.params["item"])}) has been created!`);
     }
     catch (err) {
-        res.status(500).send(SERVER_ERROR);
+        res.statusMessage = SERVER_ERROR;
+        res.status(500).end();
     }
 });
 
