@@ -118,8 +118,17 @@ function formatTitleCase(s) {
  * @api {get} /categories/ Request Item Categories
  * @apiName GetCategories
  * @apiGroup Items
+ * @apiVersion 0.1.0
  *
  * @apiSuccess {Array} categories Categories of items.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's a problem reading the list of categories.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.get("/categories", async (req, res) => {
     try {
@@ -136,10 +145,19 @@ app.get("/categories", async (req, res) => {
  * @api {get} /categories/:category Request Items in Category
  * @apiName GetCategory
  * @apiGroup Items
+ * @apiVersion 0.1.0
  *
  * @apiParam {String} category The name of the category.
  * 
  * @apiSuccess {Array} items Item names in the category.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's a problem reading the particular category directory.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.get("/categories/:category", async (req, res) => {
     try {
@@ -157,6 +175,7 @@ app.get("/categories/:category", async (req, res) => {
  * @api {get} /categories/:category Request Item
  * @apiName GetItem
  * @apiGroup Items
+ * @apiVersion 0.1.0
  *
  * @apiParam {String} category The name of the category.
  * @apiParam {String} item The name of the item.
@@ -167,6 +186,14 @@ app.get("/categories/:category", async (req, res) => {
  * @apiSuccess {Number} quantity The number of this item in-stock.
  * @apiSuccess {Number} price How much the item costs.
  * @apiSuccess {String} image The name of the image representing this item, stored in public images.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's a problem retrieving the particular item.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.get("/categories/:category/:item", async (req, res) => {
     try {
@@ -184,8 +211,17 @@ app.get("/categories/:category/:item", async (req, res) => {
  * @api {get} /items Request All Items
  * @apiName GetItems
  * @apiGroup Items
+ * @apiVersion 0.1.0
  *
  * @apiSuccess {Object} items A dictionary of everything in the categories folder.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's a problem retrieving the items.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.get("/items", async (req, res) => {
     try {
@@ -202,12 +238,21 @@ app.get("/items", async (req, res) => {
  * @api {post} /contact-form Contact Form
  * @apiName ContactForm
  * @apiGroup Contact
+ * @apiVersion 0.1.0
  * 
  * @apiParam (Request body) {String} name The person's full name.
  * @apiParam (Request body) {String} email The person's email.
  * @apiParam (Request body) {String} message The sent message.
  * 
  * @apiSuccess {String} response A message that the message was successfully recorded.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's an issue writing the message to the contact-forms folder.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.post("/contact-form", async (req, res) => {
     try {
@@ -236,10 +281,19 @@ app.post("/contact-form", async (req, res) => {
  * @api {post} /checkout Checkout
  * @apiName Checkout
  * @apiGroup Items
+ * @apiVersion 0.1.0
  * 
  * @apiParam (Request body) {Array} items An array of dictionaries with category and item keys.
  * 
  * @apiSuccess {String} response A message that the order is on its way.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised when there's a problem reading the information about the item or decrementing the quantity.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.post("/checkout", async (req, res) => {
     try {
@@ -275,10 +329,18 @@ app.post("/checkout", async (req, res) => {
  * @api {post} /login Login
  * @apiName Login
  * @apiGroup Auth
+ * @apiVersion 0.1.0
  * 
  * @apiParam (Request body) {String} username The person's username.
  * @apiParam (Request body) {String} password The persons' password.
  * 
+ * @apiError (Not Authenticated 401) NotAuthenticated
+ *     Raised when the username or password of the user isn't valid.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 401 Not Authenticated
+ *     {
+ *       "statusMessage": "Your login username or password was not recognized."
+ *     }
  */
 app.post("/login", async (req, res) => {
     try {
@@ -303,6 +365,7 @@ app.post("/login", async (req, res) => {
  * @api {get} /admin Admin Check
  * @apiName Admin
  * @apiGroup Auth
+ * @apiVersion 0.1.0
  * 
  */
 app.get("/admin", async (req, res) => {
@@ -315,6 +378,7 @@ app.get("/admin", async (req, res) => {
  * @api {post} /categories/:category/:item Update Item
  * @apiName UpdateItem
  * @apiGroup Items
+ * @apiVersion 0.1.0
  * 
  * @apiParam {String} category The item's category.
  * @apiParam {String} item The item's name.
@@ -326,6 +390,14 @@ app.get("/admin", async (req, res) => {
  * @apiParam (Request body) {String} full-description The updated item full description.
  * 
  * @apiSuccess {String} response A message that the item has been updated.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if there's an error reading/writing when updating the item.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.post("/categories/:category/:item", async (req, res) => {
     try {
@@ -355,11 +427,20 @@ app.post("/categories/:category/:item", async (req, res) => {
  * @api {delete} /categories/:category/:item Delete Item
  * @apiName DeleteItem
  * @apiGroup Items
+ * @apiVersion 0.1.0
  * 
  * @apiParam {String} category The item's category.
  * @apiParam {String} item The item's name.
  * 
  * @apiSuccess {String} response A message that the item has been deleted.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if something goes wrong trying to delete the item.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.delete("/categories/:category/:item", async (req, res) => {
     try {
@@ -378,11 +459,20 @@ app.delete("/categories/:category/:item", async (req, res) => {
  * @api {post} /items/:category/:item Create Item
  * @apiName CreateItem
  * @apiGroup Items
+ * @apiVersion 0.1.0
  * 
  * @apiParam {String} category The item's category.
  * @apiParam {String} item The item's name.
  * 
  * @apiSuccess {String} response A message that the item has been created.
+ * 
+ * @apiError (Internal Server Error 500) InternalServerError
+ *     Raised if the item trying to be created already exists.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "statusMessage": "Something went wrong... Please try again at a later time."
+ *     }
  */
 app.post("/items/:category/:item", async (req, res) => {
     try {

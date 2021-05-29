@@ -5,7 +5,7 @@
     "title": "Admin Check",
     "name": "Admin",
     "group": "Auth",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "filename": "./app.js",
     "groupTitle": "Auth",
     "sampleRequest": [
@@ -20,6 +20,7 @@
     "title": "Login",
     "name": "Login",
     "group": "Auth",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Request body": [
@@ -40,7 +41,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Not Authenticated 401": [
+          {
+            "group": "Not Authenticated 401",
+            "optional": false,
+            "field": "NotAuthenticated",
+            "description": "<p>Raised when the username or password of the user isn't valid.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"statusMessage\": \"Your login username or password was not recognized.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Auth",
     "sampleRequest": [
@@ -83,6 +102,7 @@
     "title": "Contact Form",
     "name": "ContactForm",
     "group": "Contact",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Request body": [
@@ -123,7 +143,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's an issue writing the message to the contact-forms folder.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Contact",
     "sampleRequest": [
@@ -138,6 +176,7 @@
     "title": "Checkout",
     "name": "Checkout",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Request body": [
@@ -164,7 +203,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised when there's a problem reading the information about the item or decrementing the quantity.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -179,6 +236,7 @@
     "title": "Create Item",
     "name": "CreateItem",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -212,7 +270,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if the item trying to be created already exists.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -227,6 +303,7 @@
     "title": "Delete Item",
     "name": "DeleteItem",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -260,7 +337,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if something goes wrong trying to delete the item.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -275,6 +370,7 @@
     "title": "Request Item Categories",
     "name": "GetCategories",
     "group": "Items",
+    "version": "0.1.0",
     "success": {
       "fields": {
         "Success 200": [
@@ -288,7 +384,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's a problem reading the list of categories.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -303,6 +417,7 @@
     "title": "Request Items in Category",
     "name": "GetCategory",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -329,7 +444,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's a problem reading the particular category directory.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -344,6 +477,7 @@
     "title": "Request Item",
     "name": "GetItem",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -412,7 +546,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's a problem retrieving the particular item.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -427,6 +579,7 @@
     "title": "Request All Items",
     "name": "GetItems",
     "group": "Items",
+    "version": "0.1.0",
     "success": {
       "fields": {
         "Success 200": [
@@ -440,7 +593,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's a problem retrieving the items.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
@@ -455,6 +626,7 @@
     "title": "Update Item",
     "name": "UpdateItem",
     "group": "Items",
+    "version": "0.1.0",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -525,7 +697,25 @@
         ]
       }
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Internal Server Error 500": [
+          {
+            "group": "Internal Server Error 500",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>Raised if there's an error reading/writing when updating the item.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n  \"statusMessage\": \"Something went wrong... Please try again at a later time.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./app.js",
     "groupTitle": "Items",
     "sampleRequest": [
