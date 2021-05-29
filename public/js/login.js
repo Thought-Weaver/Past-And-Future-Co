@@ -8,46 +8,14 @@
  */
 
 /************************************************************************
- * CONSTANTS
+ * IMPORTS
  ***********************************************************************/
 
- const fromId = document.getElementById.bind(document);
- const fromName = document.getElementsByName.bind(document);
- const createElem = document.createElement.bind(document);
+import { openModal, closeModal, fromId, fromName } from "./utils.js"
  
 /************************************************************************
  * FUNCTIONS
  ***********************************************************************/
- 
-function closeModal(id) {
-    fromId(id).animate(
-        [ { opacity: 0 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-
-    setTimeout(() => {
-        fromId(id).style.display = "none";
-    }, 250);
-}
- 
-function openModal(id) {
-    fromId(id).style.display = "flex";
-
-    fromId(id).animate(
-        [ { opacity: 1 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-}
  
 /**
  * Submit the form with a POST request and prevent it from navigating

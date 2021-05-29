@@ -1,54 +1,29 @@
 /*
-Name: Logan Apple
-CS 101 Spring 2021
-Date: May 26th, 2021
+    Name: Logan Apple
+    CS 101 Spring 2021
+    Date: May 26th, 2021
 
-The JS for the L&A Past and Future Co. admin page. This allows for any
-admin to make adjustments to the products without having to edit JSON
-by hand.
+    The JS for the L&A Past and Future Co. admin page. This allows for any
+    admin to make adjustments to the products without having to edit JSON
+    by hand.
 */
 
 /************************************************************************
- * CONSTANTS
+ * IMPORTS
  ***********************************************************************/
 
-const fromId = document.getElementById.bind(document);
-const createElem = document.createElement.bind(document);
+import { openModal, closeModal, fromId, createElem } from "./utils.js"
 
 /*************************************************************
  * FUNCTIONS
  *************************************************************/
 
-function closeModal(id) {
-    fromId(id).animate(
-        [ { opacity: 0 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-
-    setTimeout(() => {
-        fromId(id).style.display = "none";
-    }, 250);
-}
-
-function openModal(id) {
-    fromId(id).style.display = "flex";
-
-    fromId(id).animate(
-        [ { opacity: 1 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-}
-
+/**
+ * Create an item card element for the admin page listing.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function createItemCard(category, item) {
     let card = createElem("form");
     card.classList.add("card");
@@ -121,6 +96,12 @@ function createItemCard(category, item) {
     fromId("store-items").appendChild(card);
 }
 
+
+/**
+ * Populate the admin panel listing with all the store items.
+ *
+ * @param {Object} response - The JSON of all items in the store.
+ */
 function populateStore(response) {
     let container = fromId("store-items");
     while (container.firstChild) {
@@ -134,6 +115,10 @@ function populateStore(response) {
     })
 }
 
+
+/**
+ * Fetch all the items using the API.
+ */
 function getItems() {
     fetch("/items")
         .then(checkStatus)
@@ -142,6 +127,15 @@ function getItems() {
         .catch(handleError);
 }
 
+
+/**
+ * Update a particular item's information in the store.
+ *
+ * @param {Event} event - The form submission event.
+ * @param {String} category - The item's category.
+ * @param {String} name - The item's name.
+ * @param {Element} itemCard - The card element on the page.
+ */
 function updateItem(event, category, name, itemCard) {
     event.preventDefault();
 
@@ -172,6 +166,14 @@ function updateItem(event, category, name, itemCard) {
     .catch(handleError);
 }
 
+
+/**
+ * Delete an item from the store.
+ *
+ * @param {Event} event - The button press event.
+ * @param {String} category - The item's category.
+ * @param {String} name - The item's name.
+ */
 function deleteItem(event, category, name) {
     event.preventDefault();
 
@@ -189,6 +191,10 @@ function deleteItem(event, category, name) {
     .catch(handleError);
 }
 
+
+/**
+ * Add an item to the store using the inputs on the admin panel.
+ */
 function addItem() {
     let name = fromId("new-item-name").value;
     let category = fromId("new-item-category").value;
@@ -207,6 +213,12 @@ function addItem() {
     .catch(handleError);
 }
 
+
+/**
+ * Add all the categories to the select for adding an item.
+ *
+ * @param {Object} response - The array of categories.
+ */
 function populateCategorySelect(response) {
     let select = fromId("new-item-category");
     while (select.firstChild) {
@@ -221,6 +233,11 @@ function populateCategorySelect(response) {
     });
 }
 
+
+/**
+ * Fetch all the categories in the store, then populate
+ * the select.
+ */
 function getCategories() {
     fetch("/categories")
         .then(checkStatus)

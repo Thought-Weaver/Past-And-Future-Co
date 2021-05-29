@@ -9,46 +9,21 @@
  */
 
 /************************************************************************
- * CONSTANTS
+ * IMPORTS
  ***********************************************************************/
 
-const fromId = document.getElementById.bind(document);
-const createElem = document.createElement.bind(document);
+import { openModal, closeModal, fromId, createElem } from "./utils.js"
 
 /*************************************************************
  * FUNCTIONS
  *************************************************************/
 
-function closeModal(id) {
-    fromId(id).animate(
-        [ { opacity: 0 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-
-    setTimeout(() => {
-        fromId(id).style.display = "none";
-    }, 250);
-}
-
-function openModal(id) {
-    fromId(id).style.display = "flex";
-
-    fromId(id).animate(
-        [ { opacity: 1 } ],
-        {
-            fill: "forwards",
-            easing: "steps(4, end)",
-            duration: 250,
-            easing: "ease-in-out"
-        }
-    );
-}
-
+/**
+ * Create an item card element for the store listing.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function createItemCard(category, item) {
     let card = createElem("article");
     card.classList.add("card");
@@ -86,6 +61,11 @@ function createItemCard(category, item) {
     fromId("store-items").appendChild(card);
 }
 
+/**
+ * Populate the store listing with all the store items.
+ *
+ * @param {Object} response - The JSON of all items in the store.
+ */
 function populateStore(response) {
     let container = fromId("store-items");
     while (container.firstChild) {
@@ -99,6 +79,9 @@ function populateStore(response) {
     })
 }
 
+/**
+ * Fetch all the items using the API.
+ */
 function getItems() {
     fetch("/items")
         .then(checkStatus)
@@ -107,6 +90,11 @@ function getItems() {
         .catch(handleError);
 }
 
+/**
+ * Add all the categories to the select for filtering items.
+ *
+ * @param {Object} response - The array of categories.
+ */
 function populateCategorySelect(response) {
     let select = fromId("category-select");
     while (select.firstChild) {
@@ -126,6 +114,10 @@ function populateCategorySelect(response) {
     });
 }
 
+/**
+ * Fetch all the categories in the store, then populate
+ * the select.
+ */
 function getCategories() {
     fetch("/categories")
         .then(checkStatus)
@@ -134,11 +126,19 @@ function getCategories() {
         .catch(handleError);
 }
 
+
+/**
+ * Get all the categories and items.
+ */
 function getItemsAndCategories() {
     getCategories();
     getItems();
 }
 
+
+/**
+ * Filter the list of store items when the select is changed.
+ */
 function onSelectChange() {
     let container = fromId("store-items");
     while (container.firstChild) {
@@ -159,6 +159,13 @@ function onSelectChange() {
     }
 }
 
+
+/**
+ * Display a modal with more information about a particular item.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function displayItemModal(category, item) {
     fromId("modal-img").src = "img/" + item["image"];
     fromId("modal-img").alt = item["name"];
@@ -176,6 +183,13 @@ function displayItemModal(category, item) {
     openModal("modal-container");
 }
 
+
+/**
+ * Add an item to the cart.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function addToCart(category, item) {
     if (!localStorage.getItem("cart")) {
         localStorage.setItem("cart", JSON.stringify([]));
@@ -187,12 +201,21 @@ function addToCart(category, item) {
     localStorage.setItem("cart", JSON.stringify(currentCart));
 }
 
+/**
+ * Remove an item from the cart.
+ *
+ * @param {number} index - The index of the item in the cart.
+ */
 function removeFromCart(index) {
     let currentCart = JSON.parse(localStorage.getItem("cart"));
     currentCart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(currentCart));
 }
 
+
+/**
+ * Display the cart modal.
+ */
 function displayCart() {
     let currentCart = JSON.parse(localStorage.getItem("cart"));
     let totalCost = 0;
@@ -237,6 +260,14 @@ function displayCart() {
     openModal("cart-container");
 }
 
+
+/**
+ * Fetch information for a particular item from the API and create
+ * its card, adding it to the store listing.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function getItem(category, item) {
     fetch(`/categories/${category}/${item}`)
         .then(checkStatus)
@@ -245,6 +276,13 @@ function getItem(category, item) {
         .catch(handleError);
 }
 
+/**
+ * Fetch information for a particular item from the API and display
+ * the information on the item modal.
+ *
+ * @param {String} category - The category of the item.
+ * @param {Object} item - The item information from the API call.
+ */
 function getItemForModal(category, item) {
     let categoryFormatted = formatKebabCase(category);
     let itemFormatted = formatKebabCase(item);
@@ -256,6 +294,13 @@ function getItemForModal(category, item) {
         .catch(handleError);
 }
 
+
+/**
+ * On a successful checkout, display the success message, clear the cart,
+ * and refresh the items available.
+ *
+ * @param {String} text
+ */
 function checkoutSuccess(text) {
     localStorage.setItem("cart", JSON.stringify([]));
 
@@ -270,6 +315,10 @@ function checkoutSuccess(text) {
     onSelectChange();
 }
 
+
+/**
+ * Post the checkout route.
+ */
 function checkout() {
     let currentCart = JSON.parse(localStorage.getItem("cart"));
     let cartMapped = currentCart.map(pair => {

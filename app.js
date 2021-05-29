@@ -46,6 +46,12 @@ app.use(express.static("public"));
  * FUNCTIONS
  *************************************************************/
 
+/**
+ * Given a username, try to retrieve the user information file.
+ *
+ * @param {String} username - The user's username.
+ * @return {Object} The JSON for the user's file. 
+ */
 async function getUser(username) {
     try {
         let item = await fs.readFile(`users/${username}.json`, "utf8");
@@ -213,7 +219,7 @@ app.post("/login", async (req, res) => {
         }
 
         req.session.authenticated = true;
-        res.redirect("admin.html");
+        res.redirect("../admin.html");
     }
     catch (err) {
         res.status(401).send(LOGIN_ERROR);
@@ -222,7 +228,7 @@ app.post("/login", async (req, res) => {
 
 app.get("/admin", async (req, res) => {
     if (!req.session.authenticated) {
-        res.redirect("login.html");
+        res.redirect("../login.html");
     }
 });
 
