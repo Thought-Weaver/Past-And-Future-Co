@@ -298,7 +298,7 @@ header, #modal footer {
 
 #cart-items {
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #cart-icon, #home-icon {
@@ -323,7 +323,7 @@ header, #modal footer {
   padding: 10px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 

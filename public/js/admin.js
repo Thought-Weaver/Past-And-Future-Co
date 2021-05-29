@@ -246,6 +246,24 @@ function getCategories() {
         .catch(handleError);
 }
 
+
+/**
+ * On loading the page, make sure the user is logged in.
+ */
+function checkAdmin() {
+    fetch("/admin")
+        .then(checkStatus)
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        })
+        .catch(handleError);
+    
+    getItems();
+    getCategories(); 
+}
+
 /**
  * Checks the status of the response for an error. In the case of an error,
  * throws an error to interrupt the fetch sequence.
@@ -305,4 +323,4 @@ function formatTitleCase(s) {
 
 fromId("close-response-btn").addEventListener("click", () => { closeModal("response-container") });
 fromId("add-item-btn").addEventListener("click", addItem);
-window.addEventListener("load", () => { getItems(); getCategories(); });
+window.addEventListener("load", checkAdmin);
