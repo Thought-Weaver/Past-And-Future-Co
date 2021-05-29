@@ -7,7 +7,12 @@ define({ "api": [
     "group": "Auth",
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Auth"
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/admin"
+      }
+    ]
   },
   {
     "type": "post",
@@ -37,7 +42,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Auth"
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/login"
+      }
+    ]
   },
   {
     "success": {
@@ -115,7 +125,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Contact"
+    "groupTitle": "Contact",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/contact-form"
+      }
+    ]
   },
   {
     "type": "post",
@@ -151,7 +166,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/checkout"
+      }
+    ]
   },
   {
     "type": "post",
@@ -194,7 +214,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/items/:category/:item"
+      }
+    ]
   },
   {
     "type": "delete",
@@ -237,7 +262,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/categories/:category/:item"
+      }
+    ]
   },
   {
     "type": "get",
@@ -260,7 +290,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/categories/"
+      }
+    ]
   },
   {
     "type": "get",
@@ -296,7 +331,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/categories/:category"
+      }
+    ]
   },
   {
     "type": "get",
@@ -374,7 +414,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/categories/:category"
+      }
+    ]
   },
   {
     "type": "get",
@@ -397,7 +442,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/items"
+      }
+    ]
   },
   {
     "type": "post",
@@ -477,6 +527,11 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./app.js",
-    "groupTitle": "Items"
+    "groupTitle": "Items",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/categories/:category/:item"
+      }
+    ]
   }
 ] });

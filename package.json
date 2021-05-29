@@ -17,6 +17,7 @@
     "path": "^0.12.7"
   },
   "apidoc": {
-    "title": "API Doc for L&A Past and Future Co."
+    "title": "API Doc for L&A Past and Future Co.",
+    "sampleUrl": "localhost:8000"
   }
 }
