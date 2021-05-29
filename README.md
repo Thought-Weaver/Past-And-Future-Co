@@ -10,4 +10,4 @@ This contains an implementation of both the front-end and back-end, including:
 * Admin page for creating, editing, and deleting store items.
 * Form for submitting user complaints and queries.
 
-More information about the back-end API is available in the /doc folder.
+More information about the back-end API is available in the /apidoc folder.
