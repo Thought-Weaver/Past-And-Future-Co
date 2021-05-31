@@ -67,7 +67,7 @@ function createItemCard(category, item, index) {
         card.appendChild(elem);
     });
 
-    console.log(index);
+    fromId("store-items").appendChild(card);
 
     card.animate(
         [ { opacity: 0, transform: `translateY(${index % 2 ? 20 : -20}px)` },
@@ -80,8 +80,6 @@ function createItemCard(category, item, index) {
             delay: 250 * index
         }
     );
-
-    fromId("store-items").appendChild(card);
 }
 
 /**
