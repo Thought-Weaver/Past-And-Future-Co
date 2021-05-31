@@ -67,4 +67,6 @@ function submitForm(event) {
  ***********************************************************************/
  
 fromId("login-form").addEventListener("submit", submitForm);
+fromId("login-btn").addEventListener("click", () => { this.form.submitted="login" });
+fromId("signup-btn").addEventListener("click", () => { this.form.submitted="signup" });
 fromId("close-response-btn").addEventListener("click", () => { closeModal("response-container") });

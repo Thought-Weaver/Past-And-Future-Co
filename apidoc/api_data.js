@@ -15,6 +15,34 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/isloggedin",
+    "title": "Is Logged In",
+    "name": "IsLoggedIn",
+    "group": "Auth",
+    "version": "0.1.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "response",
+            "description": "<p>Contains a &quot;loggedin&quot; key that specifies whether the person is logged in and a defined &quot;username&quot; key if so.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./app.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/isloggedin"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/login",
     "title": "Login",
@@ -65,6 +93,107 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "localhost:8000/login"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/signout",
+    "title": "Sign Out",
+    "name": "SignOut",
+    "group": "Auth",
+    "version": "0.1.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "response",
+            "description": "<p>Redirects to main page if successful.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Not Authenticated 401": [
+          {
+            "group": "Not Authenticated 401",
+            "optional": false,
+            "field": "NotAuthenticated",
+            "description": "<p>Raised when this is called while the user isn't logged in.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"statusMessage\": \"You are not logged in!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./app.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/signout"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/signup",
+    "title": "Sign Up",
+    "name": "SignUp",
+    "group": "Auth",
+    "version": "0.1.0",
+    "parameter": {
+      "fields": {
+        "Request body": [
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>The person's username.</p>"
+          },
+          {
+            "group": "Request body",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The persons' password.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Not Authenticated 401": [
+          {
+            "group": "Not Authenticated 401",
+            "optional": false,
+            "field": "NotAuthenticated",
+            "description": "<p>Raised when the username already exists.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"statusMessage\": \"That username already exists!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./app.js",
+    "groupTitle": "Auth",
+    "sampleRequest": [
+      {
+        "url": "localhost:8000/signup"
       }
     ]
   },

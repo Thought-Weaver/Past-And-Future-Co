@@ -17,7 +17,6 @@ const express = require("express");
 const fs = require("fs/promises");
 const bodyParser = require("body-parser");
 var session = require("express-session");
-const { response } = require("express");
 
 /*************************************************************
  * CONSTANTS
@@ -26,6 +25,7 @@ const { response } = require("express");
 const app = express();
 
 const PORT = process.env.PORT || 8000;
+
 const SERVER_ERROR = "Something went wrong... Please try again at a later time.";
 const LOGIN_ERROR = "Your login username or password was not recognized.";
 const SIGNUP_ERROR = "That username already exists.";
