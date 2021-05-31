@@ -33,7 +33,7 @@ import {
  * @param {String} category - The category of the item.
  * @param {Object} item - The item information from the API call.
  */
-function createItemCard(category, item) {
+function createItemCard(category, item, index) {
     let card = createElem("article");
     card.classList.add("card");
 
@@ -67,6 +67,20 @@ function createItemCard(category, item) {
         card.appendChild(elem);
     });
 
+    console.log(index);
+
+    card.animate(
+        [ { opacity: 0, transform: `translateY(${index % 2 ? 20 : -20}px)` },
+          { opacity: 1, transform: `translateY(0px)` }
+        ],
+        {
+            fill: "forwards",
+            duration: 1000,
+            easing: "ease-in-out",
+            delay: 250 * index
+        }
+    );
+
     fromId("store-items").appendChild(card);
 }
 
@@ -81,9 +95,12 @@ function populateStore(response) {
         container.firstChild.remove();
     }
 
+    // Keep track of overall item index for delaying animations.
+    let index = 0;
     Object.keys(response["categories"]).forEach(category => {
         response["categories"][category].forEach(item => {
-            createItemCard(category, item);
+            createItemCard(category, item, index);
+            index += 1;
         })
     })
 }
@@ -161,7 +178,13 @@ function onSelectChange() {
         fetch(`/categories/${formattedCategory}`)
             .then(checkStatus)
             .then(response => response.json())
-            .then(response => { response.forEach(item => { getItem(formattedCategory, item) }) })
+            .then(response => { 
+                let index = 0;
+                response.forEach(item => { 
+                    getItem(formattedCategory, item, index);
+                    index += 1;
+                })
+            })
             .catch(handleError);
     }
 }
@@ -272,11 +295,11 @@ function displayCart() {
  * @param {String} category - The category of the item.
  * @param {Object} item - The item information from the API call.
  */
-function getItem(category, item) {
+function getItem(category, item, index) {
     fetch(`/categories/${category}/${item}`)
         .then(checkStatus)
         .then(response => response.json())
-        .then((response) => { createItemCard(category, response) })
+        .then(response => { createItemCard(category, response, index) })
         .catch(handleError);
 }
 
