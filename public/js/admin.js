@@ -260,7 +260,7 @@ function checkAdmin() {
         .catch(handleError);
     
     getItems();
-    getCategories(); 
+    getCategories();
 }
 
 /*************************************************************

@@ -17,6 +17,7 @@ const express = require("express");
 const fs = require("fs/promises");
 const bodyParser = require("body-parser");
 var session = require("express-session");
+const { response } = require("express");
 
 /*************************************************************
  * CONSTANTS
@@ -25,8 +26,10 @@ var session = require("express-session");
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-const SERVER_ERROR = "Something went wrong... Please try again at a later time."
-const LOGIN_ERROR = "Your login username or password was not recognized."
+const SERVER_ERROR = "Something went wrong... Please try again at a later time.";
+const LOGIN_ERROR = "Your login username or password was not recognized.";
+const SIGNUP_ERROR = "That username already exists.";
+const NOT_LOGGED_IN_ERROR = "You are not logged in.";
 
 /*************************************************************
  * APP SETUP
@@ -58,7 +61,7 @@ async function getUser(username) {
         return json;
     }
     catch (err) {
-        throw Error(LOGIN_ERROR);
+        return undefined;
     }
 }
 
@@ -353,10 +356,116 @@ app.post("/login", async (req, res) => {
         }
 
         req.session.authenticated = true;
-        res.redirect("../admin.html");
+        req.session.username = user.username;
+        req.session.admin = user.admin;
+
+        if (req.session.admin) {
+            res.redirect("../admin.html");
+        }
+        else {
+            res.redirect("../index.html");
+        }
     }
     catch (err) {
         res.statusMessage = LOGIN_ERROR;
+        res.status(401).end();
+    }
+});
+
+/**
+ * @api {post} /signup Sign Up
+ * @apiName SignUp
+ * @apiGroup Auth
+ * @apiVersion 0.1.0
+ * 
+ * @apiParam (Request body) {String} username The person's username.
+ * @apiParam (Request body) {String} password The persons' password.
+ * 
+ * @apiError (Not Authenticated 401) NotAuthenticated
+ *     Raised when the username already exists.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 401 Not Authenticated
+ *     {
+ *       "statusMessage": "That username already exists!"
+ *     }
+ */
+ app.post("/signup", async (req, res) => {
+    try {
+        let username = req.body["username"];
+        let password = req.body["password"];
+
+        let user = await getUser(username);
+        if (!user) {
+            let json = {
+                "username": username,
+                "password": password
+            };
+
+            await fs.writeFile(`users/${username}.json`,
+                                JSON.stringify(json),
+                                "utf8");
+
+            req.session.authenticated = true;
+            req.session.username = username;
+            res.redirect("../index.html");
+        }
+        else {
+            throw Error(SIGNUP_ERROR)
+        }
+    }
+    catch (err) {
+        res.statusMessage = SIGNUP_ERROR;
+        res.status(401).end();
+    }
+});
+
+/**
+ * @api {get} /isloggedin Is Logged In
+ * @apiName IsLoggedIn
+ * @apiGroup Auth
+ * @apiVersion 0.1.0
+ * 
+ * @apiSuccess {Object} response Contains a "loggedin" key that specifies
+ *     whether the person is logged in and a defined "username" key if so.
+ * 
+ */
+ app.get("/isloggedin", async (req, res) => {
+    res.json({ 
+        "loggedin": req.session.authenticated,
+        "username": req.session.username
+    });
+});
+
+/**
+ * @api {get} /signout Sign Out
+ * @apiName SignOut
+ * @apiGroup Auth
+ * @apiVersion 0.1.0
+ * 
+ * @apiSuccess {Object} response Redirects to main page if successful.
+ * 
+ * @apiError (Not Authenticated 401) NotAuthenticated
+ *     Raised when this is called while the user isn't logged in.
+ * @apiErrorExample Error Response (example):
+ *     HTTP/1.1 401 Not Authenticated
+ *     {
+ *       "statusMessage": "You are not logged in!"
+ *     }
+ */
+ app.get("/signout", async (req, res) => {
+    try {
+        if (!req.session.authenticated) {
+            throw Error(NOT_LOGGED_IN_ERROR);
+        }
+
+        req.session.authenticated = false;
+        req.session.username = undefined;
+        req.session.admin = undefined;
+
+        res.redirect("../index.html");
+    }
+    catch (err) {
+        res.statusMessage = NOT_LOGGED_IN_ERROR;
         res.status(401).end();
     }
 });
@@ -369,7 +478,7 @@ app.post("/login", async (req, res) => {
  * 
  */
 app.get("/admin", async (req, res) => {
-    if (!req.session.authenticated) {
+    if (!req.session.authenticated || !req.session.admin) {
         res.redirect("../login.html");
     }
 });

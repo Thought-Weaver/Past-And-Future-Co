@@ -12,6 +12,7 @@
 
 export const fromId = document.getElementById.bind(document);
 export const fromName = document.getElementsByName.bind(document);
+export const fromTag = document.getElementsByTagName.bind(document);
 export const createElem = document.createElement.bind(document); 
 
 /************************************************************************

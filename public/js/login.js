@@ -34,7 +34,15 @@ function submitForm(event) {
     // successful.
     event.preventDefault();
 
-    fetch("/login", {
+    // Though elegant, I can see a world where somehow this will be
+    // exploited without a check.
+    if (this.submitted != "login" && this.submitted != "signup") {
+        return;
+    }
+
+    // This will either be "login" or "signup" depending on which
+    // button was pressed.
+    fetch(`/${this.submitted}`, {
         method: "POST",
         redirect: "follow",
         body: JSON.stringify({

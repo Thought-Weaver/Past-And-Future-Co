@@ -1,6 +1,6 @@
 # L&A Past and Future Co.
 
-This was a project designed as my final project for the CS 101-1 web design course at Caltech over the course of three days. Rather than design a standard e-commerce site, I opted to go for a retrofuturistic company that sells time. This was made with Node.js.
+This was a project designed as my final project for the CS 101-1 web design course at Caltech over the course of a week. Rather than design a standard e-commerce site, I opted to go for a retrofuturistic company that sells time. This was made with Node.js.
 
 This contains an implementation of both the front-end and back-end, including:
 

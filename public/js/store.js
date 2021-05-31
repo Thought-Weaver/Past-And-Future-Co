@@ -17,6 +17,7 @@ import {
     closeModal,
     fromId,
     createElem,
+    fromTag,
     checkStatus,
     handleError,
     formatKebabCase,
@@ -67,6 +68,7 @@ function createItemCard(category, item, index) {
         card.appendChild(elem);
     });
 
+    card.style.opacity = 0;
     fromId("store-items").appendChild(card);
 
     card.animate(
@@ -151,11 +153,53 @@ function getCategories() {
 }
 
 /**
- * Get all the categories and items.
+ * If the user is signed in, then change the login button to a
+ * sign out button and create a nice welcome heading near the
+ * title.
+ *
+ * @param {Object} response - A JSON response regarding login status.
  */
-function getItemsAndCategories() {
+function createWelcome(response) {
+    if (response.loggedin) {
+        fromId("login-btn").remove();
+
+        let signout = createElem("a");
+        let btn = createElem("button");
+        btn.textContent = "Sign Out";
+        btn.addEventListener("click", () => {
+            fetch("/signout")
+                .then(checkStatus)
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(handleError);
+        });
+        signout.appendChild(btn);
+        
+        let nav = fromTag("nav")[0];
+        nav.insertBefore(signout, nav.firstChild);
+
+        let welcome = createElem("h3");
+        welcome.textContent = "Welcome back, " + response.username + ".";
+        fromId("title-section").appendChild(welcome);
+    }
+}
+
+/**
+ * Get all the categories and items, then check if the user
+ * is logged in.
+ */
+function loadStore() {
     getCategories();
     getItems();
+
+    fetch("/isloggedin")
+        .then(checkStatus)
+        .then(response => response.json())
+        .then(createWelcome)
+        .catch(handleError);
 }
 
 /**
@@ -374,4 +418,4 @@ fromId("close-cart-btn").addEventListener("click", () => { closeModal("cart-cont
 fromId("cart-icon").addEventListener("click", displayCart);
 fromId("category-select").addEventListener("change", onSelectChange);
 fromId("checkout-btn").addEventListener("click", checkout);
-window.addEventListener("load", getItemsAndCategories);
+window.addEventListener("load", loadStore);
