@@ -1,8 +1,1 @@
-{
-    "name": "1 Hour",
-    "short-description": "A time period of 60 minutes.",
-    "full-description": "A trip to the park? Extra time to finish your work? An hour is a versatile unit of time, something people often find themselves longing for. Our refined hours come at the highest quality, guaranteed.",
-    "quantity": 99,
-    "price": 4,
-    "image": "refined-time-icon.png"
-}
+{"name":"1 Hour","short-description":"A time period of 60 minutes.","full-description":"A trip to the park? Extra time to finish your work? An hour is a versatile unit of time, something people often find themselves longing for. Our refined hours come at the highest quality, guaranteed.","quantity":98,"price":"4","image":"refined-time-icon.png"}

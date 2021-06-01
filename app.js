@@ -16,7 +16,9 @@
 const express = require("express");
 const fs = require("fs/promises");
 const bodyParser = require("body-parser");
-var session = require("express-session");
+const session = require("express-session");
+const uuid = require("uuid");
+const FileStore = require("session-file-store")(session);
 
 /*************************************************************
  * CONSTANTS
@@ -35,14 +37,19 @@ const NOT_LOGGED_IN_ERROR = "You are not logged in.";
  * APP SETUP
  *************************************************************/
 
-app.use(session({
-    secret: "keepit",
-	resave: true,
-	saveUninitialized: true
-}));
+app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ strict: false }));
-app.use(express.static("public"));
+app.use(session({
+    genid: function(req) {
+        return uuid.v4();
+    },
+    secret: "keepit",
+	resave: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // One day
+	saveUninitialized: true,
+    store: new FileStore
+}));
 
 /*************************************************************
  * FUNCTIONS
