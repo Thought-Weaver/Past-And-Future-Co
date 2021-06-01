@@ -270,7 +270,7 @@ app.post("/contact-form", async (req, res) => {
         let email = req.body["email"];
         let message = req.body["message"];
 
-        var dateString = new Date().toLocaleString();
+        let dateString = new Date().toLocaleString();
         dateString = dateString.replaceAll("/", "-").replaceAll(":", "-").replace(",", "");
 
         await fs.writeFile(
