@@ -321,7 +321,7 @@ function displayCart() {
 
             fromId("cart-items").appendChild(cartItem);
 
-            totalCost += item["price"];
+            totalCost += parseInt(item["price"]);
         });
     }
 
@@ -359,7 +359,7 @@ function getItemForModal(category, item) {
     fetch(`/categories/${categoryFormatted}/${itemFormatted}`)
         .then(checkStatus)
         .then(response => response.json())
-        .then((response) => { displayItemModal(category, response) })
+        .then(response => { displayItemModal(category, response) })
         .catch(handleError);
 }
 
